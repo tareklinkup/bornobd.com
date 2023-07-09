@@ -1,0 +1,104 @@
+
+@import url(https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,500;0,700;0,900;1,100;1,300;1,400;1,700&display=swap" rel="stylesheet);
+
+body{
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Roboto', sans-serif;
+
+
+}
+.login-page{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #D04F49;
+}
+.right-text-h2 h2{
+    font-size: 26px;
+    font-family: 'Roboto';
+    font-weight: 900;
+}
+.right-text-h2 p{
+    font-size: 12px;
+}
+.login-container{
+   background-color: #fff;
+}
+
+.left-section{
+    background-color: #fff;
+    border-radius: 5px;
+}
+.left-section-img img{
+    width: 77%;
+    height: 230px;
+}
+.right-section{
+    background-color: #fff7f7;
+    align-items: center;
+    display: flex;
+    border-radius: 5px;
+}
+.item{
+    font-size: 12px;
+    border-left-style: none;
+    padding: 7px;
+    margin-bottom: 16px;
+}
+.input-item{
+    color: #159430;
+    background-color: #ffffff;
+    border: 1px solid #dccccc;
+    border-radius: 3px;
+    border-right-style: none;
+    padding: 10px;
+}
+.login-btn{
+    padding: 4px 42px;
+    background-color: #f1150b;
+    color: #fff;
+    border: none;
+    outline: none;
+    box-shadow: 0px 9px 6px #b70c0c;
+    border-radius: 4px;
+}
+
+.input-item .fa-envelope-square{
+    font-size: 12px;
+}
+.input-item .fa-unlock{
+    font-size: 12px;
+}
+.item:focus{
+    box-shadow: none;
+}
+.company-info{
+    font-size: 13px;
+    text-decoration: none;
+    color: #000;
+}
+.fa-building{
+    color: red;
+}
+.label-email{
+ font-size: 12px;
+}
+.label-password{
+ font-size: 12px;
+}
+.company-address{
+    font-size: 12px;
+}
+
+.left-header-text h2{
+    font-family: 'Roboto';
+    font-weight: 900;
+}
+
+@media(max-width:575px){
+    .left-header-text h2{
+      font-size: 20px;
+    }
+}

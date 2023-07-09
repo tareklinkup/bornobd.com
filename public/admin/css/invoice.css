@@ -1,0 +1,121 @@
+body{
+   font-family: Arial, Helvetica, sans-serif;
+}
+.header-img img{
+    width: 32%;
+}
+table{
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #477e98;
+}
+
+.invoice-header th{
+    border: 1px solid #4b7c94;
+    font-size: 13px;
+    text-align: center;
+    background: #4b7c94;
+    color: #fff;
+    padding: 4px;
+}
+.invoice-header td{
+    /* border: 1px solid #000; */
+    font-size: 14px;
+    padding: 4px;
+}
+.invoice-header tr:nth-child(odd){
+    margin-top: 10px;
+    background-color: rgb(189 203 210);
+    color: #fff;
+
+}
+.header-address .fa-map-marker-alt{
+    color: #117eb3;
+}
+.header-phon .fa-phone{
+    color: #117eb3;
+}
+.header-email .fa-globe{
+    color: #117eb3;
+}
+.subtotal{
+    font-size: 16px;
+    margin-left: 41%;
+}
+.subtotal span{
+ float: right;
+}
+.discout-amout{
+    font-size: 16px;
+    margin-left: 41%;
+}
+.discout-amout span{
+    float: right;
+}
+.shipppping-cost{
+    font-size: 16px;
+    margin-left: 41%;
+}
+.shipppping-cost span{
+    float: right;
+}
+.total-amout{
+    font-size: 16px;
+    margin-left: 41%;
+}
+.total-amout span{
+    float: right;
+}
+.paid-amout{
+    font-size: 16px;
+    margin-left: 41%;
+}
+.paid-amout span{
+    float: right;
+}
+.due-amout{
+    font-size: 16px;
+    margin-left: 41%;
+    background: #5292b1;
+    border-radius: 3px;
+    color: #fff;
+    padding: 2px;
+}
+.due-amout span{
+    float: right;
+}
+
+.due-amoout{
+    font-size: 16px;
+    margin-left: 41%;
+}
+.due-amoout span{
+    
+}
+.due-amout span{
+    font-size: 16px;
+    margin-left: 41%;
+}
+.note-area{
+    border-radius: 4px;
+}
+.word-text span{
+   margin-left: 8%; 
+}
+.payment-info span{
+    margin-left: 1%;
+}
+.important-note{
+    color: #e01010;
+}
+.important-note span{
+    margin-left: 6%;
+    color: black;
+}
+
+@media (max-width:767px){
+     
+}
+
+
