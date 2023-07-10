@@ -21,7 +21,7 @@
             <form action="{{ route('checkout.store') }}" method="post">
                 @csrf
                 <div class="row">
-                    <div class="col-md-7">
+                    <div class="col-md-6">
                         <div class="checkout-form">
                             <h5>Billing Address</h5>
                             <div class="row">
@@ -76,12 +76,12 @@
                                         </span>
                                     @enderror
                                 </div>
-                             
+
                                 <div class="col-md-6">
                                     <div class="form-group my-1">
                                         <select name="type_id" id="delivery_type" class="form-control login-input @error('area_id') is-invalid @enderror shadow-none" required>
-                                            <option value="" disabled selected>Delivary Type</option>
-                                            <option value="1">Cash on Delivary</option>
+                                            <option value="" disabled selected>Delivery Type</option>
+                                            <option value="1">Cash on Delivery</option>
                                             <option value="2">Collect From Shop</option>
                                             <option value="3">Courier</option>
                                         </select>
@@ -97,7 +97,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-6" id="shop-part" >
                                     <div class="form-group my-1">
                                         <select name="shop_id" id="shop_id" class="form-control login-input shadow-none">
@@ -120,7 +120,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group my-1">
                                 @if (Auth::guard('customer')->check())
                                     <textarea name="billing_address" id="" class="form-control login-input shadow-none @error('billing_address') is-invalid @enderror" rows="2" placeholder="Billing Address"
@@ -174,7 +174,7 @@
                     </div>
 
 
-                    <div class="col-md-5">
+                    <div class="col-md-6">
 
                         <div class="order-history-part">
                             <h5 class=" text-center">Order Summery</h3>
@@ -183,13 +183,15 @@
                                         <tr>
                                             <th>Image</th>
                                             <th>Name</th>
+                                            <th>Size</th>
+                                            <th>Color</th>
                                             <th>Quantity</th>
                                             <th>Subtotal</th>
                                         </tr>
 
                                     </thead>
                                     <tbody>
-                                        {{-- @php 
+                                        {{-- @php
                                         $sum = 0;
                                         $trailoring_sum = 0;
                                         foreach (\Cart::getContent() as $item) {
@@ -203,6 +205,8 @@
                                                 <td><img src="{{ asset('uploads/products/small/' . $item->attributes->image) }}"
                                                         alt="" class="check-out-img"></td>
                                                 <td>{{ $item->name }}</td>
+                                                <td>{{ $item->attributes->size }}</td>
+                                                <td>{{ $item->attributes->color }}</td>
                                                 <td>{{ $item->quantity }}</td>
                                                 <td>{{currency_sign()}}{{ currency_amount($item->quantity * $item->price) }}</td>
                                             </tr>
@@ -282,7 +286,7 @@
             <div class="custom-border-bottom">
                 <h3 class="text-center title-text">Similar Product</h3>
             </div>
-           
+
             <div class="container mt-3">
                 @if(count($product) > 4)
                 <div class="owl-carousel product-carousel owl-theme">
@@ -364,7 +368,7 @@
                     success: function(data) {
                         var total = '<?php echo \Cart::getTotal(); ?>';
                         let rate = '{{currency_rate()}}';
-                        
+
 
                         if ((parseFloat(total) >= parseFloat(freeShipping)) || '{{$is_free_shipping}}') {
                             $('#charge').text('Free Shipping 0');
@@ -396,7 +400,7 @@
 
                 $('#member_ship_amount').text(discount);
                 $('#total').text(total_amount);
-                
+
             }
         </script>
 
@@ -522,7 +526,7 @@
                     $('#shop_id').removeAttr('required');
                     $('#area_id').removeAttr('required');
                 }
-               
+
             })
         </script>
     @endpush

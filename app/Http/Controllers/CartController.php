@@ -23,7 +23,7 @@ class CartController extends Controller
         if($product->discount != ''){
             $price = calculateDiscount($product->price, $product->discount);
         }else{
-            $price = $product->price; 
+            $price = $product->price;
         }
         \Cart::add([
             'id' => $product->id,
@@ -56,7 +56,7 @@ class CartController extends Controller
         );
         return back()->with('success','Card Updated Successfully');
     }
-    
+
     public function cartRemove($id){
         \Cart::remove($id);
         return back()->with('success','Cart Remove Successfully');
@@ -80,7 +80,7 @@ class CartController extends Controller
         if($product->discount != ''){
             $price = calculateDiscount($product->price, $product->discount);
         }else{
-            $price = $product->price; 
+            $price = $product->price;
         }
 
         \Cart::add([
@@ -93,10 +93,12 @@ class CartController extends Controller
                 'slug' => $product->slug,
                 'color' => $color,
                 'size'  => $size,
+                'color_id' => $request->color_id,
+                'size_id' => $request->size_id,
                 'category_id' => $product->category_id,
             )
         ]);
-        
+
         return redirect()->route('checkout')->with('success','Checkout Added Successfully');
     }
 
@@ -117,7 +119,7 @@ class CartController extends Controller
     public function giftCartUpdate(Request $request,$id){
     // dd($request->all());
         $product = Product::where('id',$id)->first();
-    
+
         \Cart::update(
             $id,
             [
@@ -129,7 +131,7 @@ class CartController extends Controller
         );
         // dd(\Cart::getContent());
         return back()->with('success','Wrapping Added Successfully');
-       
+
     }
 
 
@@ -150,6 +152,6 @@ class CartController extends Controller
         );
         return back()->with('success','Trailoring Added Successfully');
     }
-  
-    
+
+
 }

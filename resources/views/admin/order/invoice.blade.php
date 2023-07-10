@@ -9,7 +9,7 @@
  @media print
   {
       /* #non-printable { display: none; }
-      #printable { display: block !important; } 
+      #printable { display: block !important; }
       .card-border{
         border:none !important;
       }
@@ -25,7 +25,7 @@
       } */
   }
 </style>
-@endpush     
+@endpush
   <div class="breadcrumb-area">
     <div class="container">
         <div class="row">
@@ -52,7 +52,7 @@
                           <h3 style="text-align: right; margin:15px 0px;float:right">Invoice &nbsp;&nbsp;#{{ $order->invoice_no }}</h3>
                         </div>
                       </div>
-                      
+
                       <hr class="mt-1 mb-1">
                     </div>
                     <div style="display: flex;width:100%">
@@ -67,10 +67,10 @@
                         <!--  <strong> Delivery Date : </strong> -->
                         <!--  @if(isset($order->delivery_date))-->
                         <!--    {{$order->delivery_date}}-->
-                          
+
                         <!--  @endif-->
-                         
-                        
+
+
                         <!--</p>-->
                         <!--<p style="text-align: right; margin-bottom:0">-->
                         <!--  <strong> Delivery Time : </strong> -->
@@ -99,33 +99,33 @@
                               <tr >
                                   <th style="padding:5px;">#</th>
                                   <th style="padding:5px;text-align:left">Product Name</th>
-                                  <th style="padding:5px; text-align:center">Quantity</th>
-                                  <th style="text-align: right; padding:5px;">Unit cost</th>
                                   <th style="text-align: right; padding:5px;">Size</th>
                                   <th style="text-align: right; padding:5px;">Color</th>
+                                  <th style="padding:5px; text-align:center">Quantity</th>
+                                  <th style="text-align: right; padding:5px;">Unit cost</th>
                                   <th style="text-align: right; padding:5px;">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
-                             
+
                               @foreach ($order->orderDetails as $key=> $item)
                               <tr style="text-align: right; ">
                                 <td style="text-align: center; padding:5px; font-size:13px">{{ $key+1 }}</td>
                                 <td style="text-align: left; padding:5px; font-size:13px">{{ $item->product_name }}</td>
+                                <td style="text-align: right; padding:5px; font-size:13px">{{ isset($item->size->name) ? $item->size->name : '-' }}</td>
+                                <td style="text-align: right; padding:5px; font-size:13px">{{ isset($item->color->name) ? $item->color->name : '-' }}</td>
                                 <td  style="text-align:center; padding:5px; font-size:13px">{{ $item->quantity }} </td>
                                 <td style="text-align: right; padding:5px; font-size:13px">{{ $item->price }} Tk</td>
-                                <td style="text-align: right; padding:5px; font-size:13px">{{ $item->size->name }}</td>
-                                <td style="text-align: right; padding:5px; font-size:13px">{{ $item->color->name }}</td>
                                 <td style="text-align: right; padding:5px; font-size:13px">{{ $item->total_price }} Tk</td>
                               </tr>
                               @endforeach
                             </tbody>
                           </table>
-                        
+
                     </div>
                     <div>
                       <span id="word" ></span>
-                     
+
                     {{-- <input id="number" type="hidden" value="{{ $order->total_amount }}" /> --}}
                       {{-- <p id="number"> Number: {{ $order->total_amount }} </p> --}}
                       <p  style="text-align: right;margin-bottom:0; margin-top:10px"><span style="font-weight:600">Sub Total :</span>  {{ $order->orderDetails->sum('total_price') }} Tk</p>
@@ -133,7 +133,7 @@
                       <h4 style="text-align: right; font-weight:700"><span>Total :</span><span id="number"> {{ $order->total_amount }}  </span> Tk</h4>
                       <hr >
                     </div>
-                   
+
                 </div>
                 <div class="container-fluid w-100 mb-3" >
                   <button href="#"  onclick="printDiv('printableArea')" class="btn btn-primary btn-sm float-right ml-2"><i class="fa fa-print mr-1"></i>Print</button>
@@ -142,7 +142,7 @@
         </div>
     </div>
   </div>
-    
+
 @endsection
 @push('admin-js')
       <script>

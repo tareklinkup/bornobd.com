@@ -87,7 +87,7 @@ class CheckoutController extends Controller
             $last_invoice_no =  Order::whereDate('created_at', today())->latest()->take(1)->pluck('invoice_no');
             if (count($last_invoice_no) > 0) {
                 $invoice_no = $last_invoice_no[0] + 1;
-            } else {  
+            } else {
                 $invoice_no = date('ymd') . '000001';
             }
             $content = CompanyProfile::first();
@@ -148,9 +148,13 @@ class CheckoutController extends Controller
                 // $order->courier_id              = $request->courier_id ?? NULL;
                 $order->save();
 
+                // dd(\Cart::getContent());
+
                 foreach (\Cart::getContent() as $value) {
                     // $price = $value->price * $value->quantity + $value->tailoring_charge + $value->wp_price;
+
                     $price = $value->price * $value->quantity;
+
                     $orderDetails = new OrderDetails();
                     $orderDetails->order_id = $order->id;
                     $orderDetails->product_id = $value->id;
@@ -158,6 +162,8 @@ class CheckoutController extends Controller
                     $orderDetails->customer_id = Auth::guard('customer')->user()->id;
                     $orderDetails->price = $value->price;
                     $orderDetails->quantity = $value->quantity;
+                    $orderDetails->color_id = $value->attributes->color_id;
+                    $orderDetails->size_id = $value->attributes->size_id;
                     $orderDetails->total_price = $price;
                     $orderDetails->from_name = $value->from_name;
                     $orderDetails->to_name = $value->to_name;
@@ -284,6 +290,8 @@ class CheckoutController extends Controller
                             $orderDetails->customer_id = $customer->id;
                             $orderDetails->price = $value->price;
                             $orderDetails->quantity = $value->quantity;
+                            $orderDetails->color_id = $value->color_id;
+                            $orderDetails->size_id = $value->size_id;
                             $orderDetails->wp_price = $value->wp_price ?? NULL;
                             // $orderDetails->trailoring_charge = 0;
                             // $orderDetails->trailoring_charge = $value->tailoring_charge ?? NULL;
@@ -303,7 +311,7 @@ class CheckoutController extends Controller
                             if(session()->has('is_coupon_apply')){
                                 session()->forget('is_coupon_apply');
                             }
-                            
+
                             \Cart::clear();
                             return redirect()->route('home.index');
                         } else {
@@ -329,7 +337,7 @@ class CheckoutController extends Controller
 
         $customer_id = Auth::guard('customer')->user()->id;
 
-        
+
         if (Auth::guard('customer')->check()) {
             $today = now()->format('Y-m-d');
             $cuponCode = Coupon::whereDate('start_date', '<=', now())->whereDate('expiry_date', '>=', now())->get();

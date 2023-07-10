@@ -59,7 +59,7 @@
                             <tr>
                                 <th>SL</th>
                                 <th>Product Name</th>
-                                
+
                                 <th>Qty</th>
                                 <th>Unit Price</th>
                                 <th>Total Price</th>
@@ -69,11 +69,11 @@
                                     <tr style="text-align:center">
                                         <td>{{$key+1}}</td>
                                         <td>{{$d_order->product->name}}</td>
-                                        
+
                                         <td>{{$d_order->quantity}}</td>
                                         <td>{{$d_order->price}}</td>
                                         <td>{{$d_order->price * $d_order->quantity }}</td>
-                                    </tr>  
+                                    </tr>
                                 @endforeach
                             @endisset
                         </table>
@@ -101,12 +101,12 @@
                       <div class="col-lg-6 col-md-6 col-6">
                         <div class="paymet-option">
                           <p class="subtotal mb-0">Subtotal:<span class="span-subtotal">{{$orderDetails['0']->order->total_amount}} TK</span></p>
-                          <p class="discout-amout mb-0">Discout:<span class="discout-percent"> 5%</span></p>
+                          <p class="discout-amout mb-0">Discount:<span class="discout-percent"> 5%</span></p>
                           <p class="shipppping-cost mb-0">Shipping Cost:<span>200 Tk</span></p>
                           <p class="total-amout mb-0">Total Amount:<span class="span-amout">4000 Tk</span></p>
                           <p class="paid-amout mb-0">Paid:<span class="paid-span">1000 Tk</span></p>
                           <p class="due-amout mb-0">Due:<span class="paid-span">3000 Tk</span></p>
-                        
+
                         </div>
                       </div>
                   </div>
@@ -120,7 +120,7 @@
         <br/>
         <br/>
         <br/>
-        
+
     </div>
 @endsection
 @push('admin-js')
@@ -129,9 +129,9 @@
     $("#btnPrint").on('click', function(){
         $('.company-header').css('display','block');
         var toPrint = document.getElementById('printArea');
-    
+
     window.print();
-    
+
 });
 </script>
 @endpush

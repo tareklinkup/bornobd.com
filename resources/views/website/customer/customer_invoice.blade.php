@@ -9,7 +9,7 @@
  @media print
   {
       /* #non-printable { display: none; }
-      #printable { display: block !important; } 
+      #printable { display: block !important; }
       .card-border{
         border:none !important;
       }
@@ -25,7 +25,7 @@
       } */
   }
 </style>
-@endpush     
+@endpush
 <div class="container">
     <nav class="border pt-2 px-3 my-2 bg-light" style="" aria-label="breadcrumb">
         <ol class="breadcrumb mb-2">
@@ -49,7 +49,7 @@
                           <h3 style="text-align: right; margin:15px 0px;float:right">Invoice &nbsp;&nbsp;#{{ $order->invoice_no }}</h3>
                         </div>
                       </div>
-                      
+
                       <hr class="mt-1 mb-1">
                     </div>
                     <div style="display: flex;width:100%">
@@ -64,10 +64,10 @@
                         <!--  <strong> Delivery Date : </strong> -->
                         <!--  @if(isset($order->delivery_date))-->
                         <!--    {{$order->delivery_date}}-->
-                          
+
                         <!--  @endif-->
-                         
-                        
+
+
                         <!--</p>-->
                         <!--<p style="text-align: right; margin-bottom:0">-->
                         <!--  <strong> Delivery Time : </strong> -->
@@ -96,6 +96,8 @@
                               <tr >
                                   <th style="padding:10px;">#</th>
                                   <th style="padding:10px;text-align:left">Product Name</th>
+                                  <th style="padding:10px;text-align:left">Color</th>
+                                  <th style="padding:10px;text-align:left">Size</th>
                                   <th style="padding:10px; text-align:center">Quantity</th>
                                   <th style="text-align: right; padding:10px;">Unit cost</th>
                                   <th style="text-align: right; padding:10px;">Wrapping cost</th>
@@ -104,13 +106,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                             
+{{--
+                                @dd($order->orderDetails); --}}
+
                               @foreach ($order->orderDetails as $key=> $item)
                               <tr style="text-align: right; ">
                                 <td style="text-align: center; padding:5px; font-size:13px">{{ $key+1 }}</td>
                                 <td style="text-align: left; padding:5px; font-size:13px">{{ $item->product_name }}</td>
+                                <td style="text-align: left; padding:5px; font-size:13px">{{ isset($item->color->name) ? $item->color->name : '-' }}</td>
+                                <td style="text-align: left; padding:5px; font-size:13px">{{ isset($item->size->name) ? $item->size->name : '-' }}</td>
                                 <td  style="text-align:center; padding:5px; font-size:13px">{{ $item->quantity }} </td>
-                                
                                 <td style="text-align: right; padding:5px; font-size:13px">{{currency_sign()}} {{ currency_amount($item->price)}}</td>
                                 <td style="text-align: right; padding:5px; font-size:13px">{{currency_sign()}} {{ currency_amount($item->wp_price)}}</td>
                                 <td style="text-align: right; padding:5px; font-size:13px">{{currency_sign()}} {{ currency_amount($item->trailoring_charge)}}</td>
@@ -119,11 +124,11 @@
                               @endforeach
                             </tbody>
                           </table>
-                        
+
                     </div>
                     <div>
                       <span id="word" ></span>
-                     
+
                     {{-- <input id="number" type="hidden" value="{{ $order->total_amount }}" /> --}}
                       {{-- <p id="number"> Number: {{ $order->total_amount }} </p> --}}
                       <p  style="text-align: right;margin-bottom:0; margin-top:10px"><span style="font-weight:600">Sub Total :</span>{{currency_sign()}} {{ currency_amount($order->orderDetails->sum('total_price'))}} </p>
@@ -131,7 +136,7 @@
                       <h4 style="text-align: right; font-weight:700"><span>Total :</span><span id="number">{{currency_sign()}} {{ currency_amount( $order->total_amount)}}  </span></h4>
                       <hr >
                     </div>
-                   
+
                 </div>
                 <div class="container-fluid w-100 mb-3" >
                   <button href="#"  onclick="printDiv('printableArea')" class="btn btn-primary btn-sm float-right ml-2"><i class="fa fa-print mr-1"></i>Print</button>

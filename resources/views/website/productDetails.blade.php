@@ -43,10 +43,10 @@
                     <input type="hidden" id="product_code" value="{{ $product->product_code }}">
                     @if ($product->discount != '')
                         <div class="d-flex">
-                            <p class="mb-1 detail-text"> <span class="">Price:</span> 
+                            <p class="mb-1 detail-text"> <span class="">Price:</span>
                                 <span class=" pe-3 text-danger">
                                     {{currency_sign()}}{{currency_amount(calculateDiscount($product->price, $product->discount)) }}
-                                </span> 
+                                </span>
                                 <span><del class="text-danger">{{currency_sign()}}{{ $product->currency_amount }}</del></span>
                             </p>
                         </div>
@@ -63,15 +63,15 @@
 
                     <form action="{{ route('cart.add', $product->id) }}" method="post">
                         @csrf
-                        
+
                         <div class="detail-text">
                             <span class="">Category:</span> <a
                             href="{{ route('categroy.product', $product->category->slug) }}">{{ $product->category->name }}</a>
-                        </div> 
+                        </div>
                         @php
                             $color = explode(',', $product->color_id);
                         @endphp
-                        <div class="detail-text"> 
+                        <div class="detail-text">
                             <span class="">Color:</span>
                             @foreach ($colors as $item)
                                 @foreach ($color as $key => $s)
@@ -164,7 +164,7 @@
                         </div>
                     </div>
                 @endforeach
-               <div style="cursor: pointer" id="sizeGuides" onclick="sizeGuide({{ $product->id }})"><img class="w-100" src="{{ asset($product->sizeguide) }}" alt=""></div> 
+               <div style="cursor: pointer" id="sizeGuides" onclick="sizeGuide({{ $product->id }})"><img class="w-100" src="{{ asset($product->sizeguide) }}" alt=""></div>
 
             </div>
         </div>
@@ -377,7 +377,7 @@
                         {{-- <img src="{{ asset($product->name) }}" alt=""> --}}
                         <img class="w-100" src="{{ asset($product->sizeguide) }}" alt="">
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -398,16 +398,16 @@
                         @foreach ($sizes as $item)
                             @foreach ($size as $key => $s)
                                 @if ($s == $item->id)
-                                <div class="vertical-align"> 
+                                <div class="vertical-align">
                                     <input style="height: 20px;width:20px; " type="radio" name="size_id" value="{{ $item->id }}"
                                          onclick="size(this)" class=""
                                         {{ $key == 1 ? 'checked' : '' }}> <span style="font-size:20px;padding-left:7px">{{ $item->name }}</span> <br></div>
                                 @endif
                             @endforeach
                         @endforeach
-                      
+
                         </div>
-                        <div class="col-6"> 
+                        <div class="col-6">
                             <img class="w-100" src="{{ asset('/uploads/products/thumbnail/' . $product->thumb_image) }}" alt="">
                         </div>
                         <button class="btn btn-secondary rounded-0 mt-2 bg-dark">Check</button>
@@ -427,7 +427,7 @@
         </script>
 
         <script>
-           
+
 
             $(document).on('submit', '#reviewForm', function(e) {
                 e.preventDefault();
