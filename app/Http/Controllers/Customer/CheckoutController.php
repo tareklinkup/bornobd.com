@@ -63,18 +63,19 @@ class CheckoutController extends Controller
 
     public function checkoutStore(Request $request)
     {
-        // dd($request->all());
+
         $request->validate(
             [
                 'customer_name'     => 'required|max:150',
                 'customer_mobile'   => 'required|regex:/^01[3-9][\d]{8}$/|max:14',
                 'customer_email'    => 'required|email|max:50',
                 'billing_address'   => 'required',
-                'area_id'           => 'required',
+                'delivery_type'           => 'required',
                 // 'charge'            => 'required'
             ],
 
         );
+
 
         // $sum = 0;
         // $trailoring_sum = 0;
@@ -83,7 +84,10 @@ class CheckoutController extends Controller
         //     $trailoring_sum +=  $item->tailoring_charge;
         // }
 
+
+
         if (Auth::guard('customer')->check()) {
+
             $last_invoice_no =  Order::whereDate('created_at', today())->latest()->take(1)->pluck('invoice_no');
             if (count($last_invoice_no) > 0) {
                 $invoice_no = $last_invoice_no[0] + 1;
@@ -110,8 +114,10 @@ class CheckoutController extends Controller
                 $charge = 0;
             } else {
                 $Dcharge = DeliveryCharge::where('id', $request->area_id)->select('charge')->first();
-                $charge = $Dcharge->charge;
+                $charge = $Dcharge->charge ?? 0; // cash
             }
+
+
 
             // $total_amount = \Cart::getTotal() + $charge + $sum + $trailoring_sum;
             $total_amount = \Cart::getTotal() + $charge;
@@ -121,6 +127,8 @@ class CheckoutController extends Controller
                 $member_ship_discount = (($total_amount * $discount_percent) / 100);
                 $total_amount -= $member_ship_discount;
             }
+
+
 
             try {
                 DB::beginTransaction();
@@ -147,6 +155,8 @@ class CheckoutController extends Controller
                 // $order->area_id                 = $request->area_id ?? NULL;
                 // $order->courier_id              = $request->courier_id ?? NULL;
                 $order->save();
+
+
 
                 // dd(\Cart::getContent());
 
@@ -181,6 +191,8 @@ class CheckoutController extends Controller
                     }
                 }
 
+
+
                 DB::commit();
                 // $message = "সফল ভাবে আপনার অর্ডারটি সম্পন্ন হয়েছে, আপনি {$order->total_amount} টাকার অর্ডার করেছেন।";
 
@@ -194,8 +206,18 @@ class CheckoutController extends Controller
                     session()->forget('is_coupon_apply');
                 }
 
+
+
                 \Cart::clear();
-                return redirect()->route('home.index');
+
+                session(['orderId' => $order->id, 'invoice' => $invoice_no, 'order_total' => $order->total_amount]);
+                // dd($request->bkash_payment);
+                if( isset($request->bkash_payment) && $request->bkash_payment == 1) {
+                    return redirect()->route('url-pay');
+                } else {
+                    return redirect()->route('home.index');
+                }
+
             } catch (\Exception $e) {
                 return $e->getMessage();
                 DB::rollBack();

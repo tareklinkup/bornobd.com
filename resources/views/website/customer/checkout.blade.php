@@ -9,6 +9,27 @@
     {
         font-size: 14px
     }
+
+    .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
+      }
+
+      button {
+        background-color: blue;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+
 </style>
     <section>
         <div class="container mt-3">
@@ -79,11 +100,11 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group my-1">
-                                        <select name="type_id" id="delivery_type" class="form-control login-input @error('area_id') is-invalid @enderror shadow-none" required>
+                                        <select name="delivery_type" id="delivery_type" class="form-control login-input @error('area_id') is-invalid @enderror shadow-none" required>
                                             <option value="" disabled selected>Delivery Type</option>
-                                            <option value="1">Cash on Delivery</option>
-                                            <option value="2">Collect From Shop</option>
-                                            <option value="3">Courier</option>
+                                            <option value="cash">Cash on Delivery</option>
+                                            <option value="shop">Collect From Shop</option>
+                                            <option value="courier">Courier</option>
                                         </select>
                                     </div>
                                 </div>
@@ -170,6 +191,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
@@ -269,6 +291,11 @@
 
                                     </tbody>
                                 </table>
+
+                                <div class="mt-2">
+                                    <label for="" style="color:green; font-size:17px; font-weight:bold;">Payment Now Bkash</label>
+                                    <input type="checkbox" name="bkash_payment" id="" value="1">
+                                </div>
 
                                 <div class="d-flex mt-2">
                                     <button type="submit" class="btn check-out-btn custom-btn">Checkout</button>
@@ -494,9 +521,42 @@
         </script>
 
         <script>
+
             $('#delivery_type').on('change',function(){
                 let value = $(this).val();
-                if(value == 1){
+                console.log(value)
+                // if(value == 'cash'){
+                //     $('#aria-part').show();
+                //     $('#shop-part').hide();
+                //     $('#curier-part').hide();
+                //     $('#area_id').attr('required', 'required');
+                //     $('#shop_id').removeAttr('required');
+                //     $('#courier_id').removeAttr('required');
+                //     $('#area_id').val('');
+                //     $('#courier_id').val('');
+                // }
+                // if(value == 2){
+                //     $('#aria-part').hide();
+                //     $('#shop-part').show();
+                //     $('#curier-part').hide();
+                //     $('#shop_id').attr('required', 'required');
+                //     $('#area_id').removeAttr('required');
+                //     $('#courier_id').removeAttr('required');
+                //     $('#shop_id').val('');
+                //     $('#courier_id').val('');
+                // }
+                // if(value == 3){
+                //     $('#aria-part').hide();
+                //     $('#shop-part').hide();
+                //     $('#curier-part').show();
+                //     $('#courier_id').attr('required', 'required');
+                //     $('#shop_id').val('');
+                //     $('#area_id').val('');
+                //     $('#shop_id').removeAttr('required');
+                //     $('#area_id').removeAttr('required');
+                // }
+
+                if(value == 'cash'){
                     $('#aria-part').show();
                     $('#shop-part').hide();
                     $('#curier-part').hide();
@@ -506,7 +566,7 @@
                     $('#area_id').val('');
                     $('#courier_id').val('');
                 }
-                if(value == 2){
+                if(value == 'shop'){
                     $('#aria-part').hide();
                     $('#shop-part').show();
                     $('#curier-part').hide();
@@ -516,7 +576,7 @@
                     $('#shop_id').val('');
                     $('#courier_id').val('');
                 }
-                if(value == 3){
+                if(value == 'courier'){
                     $('#aria-part').hide();
                     $('#shop-part').hide();
                     $('#curier-part').show();
@@ -526,8 +586,18 @@
                     $('#shop_id').removeAttr('required');
                     $('#area_id').removeAttr('required');
                 }
+                if(value == 'bkash'){
+                    $('#aria-part').hide();
+                    $('#shop-part').hide();
+                    $('#curier-part').hide();
+                    $('#courier_id').removeAttr('required', 'required');
+                    $('#shop_id').val('');
+                    $('#area_id').val('');
+                    $('#shop_id').removeAttr('required');
+                    $('#area_id').removeAttr('required');
+                }
 
-            })
+             })
         </script>
     @endpush
 @endsection

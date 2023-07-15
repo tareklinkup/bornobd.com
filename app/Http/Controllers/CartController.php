@@ -20,11 +20,13 @@ class CartController extends Controller
         }
 
         $size = Size::where('id',$request->size_id)->first()->name;
+
         if($product->discount != ''){
             $price = calculateDiscount($product->price, $product->discount);
         }else{
             $price = $product->price;
         }
+
         \Cart::add([
             'id' => $product->id,
             'name' => $product->name,

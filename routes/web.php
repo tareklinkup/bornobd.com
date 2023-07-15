@@ -1,14 +1,16 @@
 <?php
 
-use App\Http\Controllers\BulkQuantityController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\Customer\WishlistController;
 use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\BkashController;
 use App\Http\Controllers\ReviewController;
-use GuzzleHttp\Psr7\Request;
+use App\Http\Controllers\BulkQuantityController;
+use App\Http\Controllers\Customer\WishlistController;
+use App\Http\Controllers\Customer\CheckoutURLController;
 
 // use GuzzleHttp\Middleware;
 
@@ -43,7 +45,7 @@ Route::post('/contact-store', [HomeController::class, 'contactStore'])->name('co
 Route::get('/partner-details/{id}', [HomeController::class, 'partnerPage'])->name('partnerPage.details');
 // store list
 Route::get('/store-list', [HomeController::class, 'storeList'])->name('store.list');
-   
+
 // track with quriar
 Route::get('/tracking-order', [HomeController::class, 'track'])->name('website.track');
 
@@ -54,12 +56,12 @@ Route::get('/price-filter', [HomeController::class, 'productFileter'])->name('fi
 Route::get('/trending-product', [HomeController::class, 'trendproductList'])->name('trending.product');
 Route::get('/new-arrival-product', [HomeController::class, 'newArrival'])->name('newarrival.product');
 Route::get('/hot-deal-product', [HomeController::class, 'dealProduct'])->name('deal.product');
-   
-// product review    
+
+// product review
 Route::post('review-product', [ReviewController::class, 'reviewStore'])->name('review.store');
 Route::get('rewiew-list/{id}', [ReviewController::class, 'showReview'])->name('review.show');
 
-// mother api branch 
+// mother api branch
 Route::get('mother-api-branch', [HomeController::class, 'getMotherApiContent'])->name('mother.branch');
 
 
@@ -75,13 +77,27 @@ Route::get('/cart-increment-decrement/{data}/{id}',[CartController::class,'cartI
 Route::post('/gift-cart-update/{id}',[CartController::class,'giftCartUpdate'])->name('gift.cart.update');
 Route::get('/ajax-cart-remove/{id}',[CartController::class,'ajaxCartRemove'])->name('ajax.cart.remove');
 Route::post('/trailoring-add/{id}',[CartController::class,'trailoringAdd'])->name('trailoring.add');
-    
+
 Route::get('/cart-list',[HomeController::class,'cartList'])->name('cart.list');
 // wish list
 Route::get('/size-Guide',[HomeController::class, 'sizeGuide'])->name('sizeGuide.web');
 // serarch route
 Route::get('/get_suggestions', [HomeController::class, 'getSearchSuggestions'])->name('get.suggetion');
 Route::get('/search', [HomeController::class, 'productSearch'])->name('search');
+
+
+//--------- Payment Bikash -------------//
+
+// Checkout (URL) User Part
+Route::get('/bkash/pay', [CheckoutURLController::class, 'payment'])->name('url-pay');
+    Route::post('/bkash/create', [CheckoutURLController::class, 'createPayment'])->name('url-create');
+    Route::get('/bkash/callback', [CheckoutURLController::class, 'callback'])->name('url-callback');
+
+// Checkout (URL) Admin Part
+Route::get('/bkash/refund', [BkashController::class, 'getRefund'])->name('url-get-refund');
+Route::post('/bkash/refund', [BkashController::class, 'refundPayment'])->name('url-post-refund');
+
+
 
 // bulk quantity
 
@@ -91,6 +107,3 @@ require __DIR__ . '/admin.php';
 
 // customer all route
 require __DIR__ . '/customer.php';
-
-   
-

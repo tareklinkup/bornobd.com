@@ -27,7 +27,7 @@ class DashboardController extends Controller
     {
         $countries= Country::all();
         $districts = District::all();
-       
+
         $order= Order::with('orderDetails')->where('customer_id',Auth::guard('customer')->user()->id)->get();
         $reward = OrderDetails::with('product');
         $customer_id = Auth::guard('customer')->user()->id;
@@ -44,20 +44,21 @@ class DashboardController extends Controller
         //     return $option->pivot->price;
         // });
 
-        
+
         $wishlist = wishList::with('product')->where('customer_id', Auth::guard('customer')->user()->id)->get();
-        return view('website.customer.dashboard', compact('countries','districts','order','reward','wishlist'));
+        // return $wishlist;
+        return view('website.customer.dashboard', compact('countries','districts','order','reward', 'wishlist'));
     }
 
     public function customerInvoice($id){
         $order = Order::with('orderDetails')->where('id', $id)->where('customer_id', Auth::guard('customer')->user()->id)->first();
         return view('website.customer.customer_invoice', compact('order'));
     }
-  
+
 
     public function customerUpdate(Request $request, Customer $customer)
     {
-      
+
         $this->validate($request, [
             'name'        => 'required|max:100',
             'phone'       => 'required|unique:customers,id|max:11',
@@ -103,8 +104,8 @@ class DashboardController extends Controller
             Session::flash('error', 'Profile Update fail');
             return back();
         }
-         
-       
+
+
     }
 
     public function addressChange(Request $request){
@@ -115,7 +116,7 @@ class DashboardController extends Controller
             // 'upazila_id'   =>'required',
             'address'      =>'required',
         ]);
-        
+
         $customer = Customer::where('id',Auth::guard('customer')->user()->id)->first();
         // $customer->country_id  = $request->country_id;
         // $customer->district_id = $request->district_id;

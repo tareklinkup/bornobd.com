@@ -27,7 +27,7 @@
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#order">Order</a>
                     </li>
-                   
+
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="tab" href="#wishlists">WishList</a>
                     </li>
@@ -179,15 +179,15 @@
                                                     <input type="hidden" name="size_id" id="size" value="">
                                                     <input type="hidden" name="color_id" id="color" value="">
                                                     <button type="submit" class="btn checkout-btn">Checkout</button>
-                                                       
+
                                                 </form>
                                                 <a type="submit" href="{{ route('wishlist.delete', $item->id) }}"  class="ms-2 btn btn-outline-danger mt-2"><i class="fas fa-trash-alt"></i></a>
                                             </span>
-                                         
+
                                         </div>
 
-                                      
-                                       
+
+
                                     @endforeach
                                 </table>
                             </div>
@@ -336,7 +336,7 @@
                         <!------ order  section start --->
                         <div class="tab-pane  fade" id="order">
                             <div class="card p-4">
-                                <div class="vertical-align dasboard-dotted-border mb-3"> 
+                                <div class="vertical-align dasboard-dotted-border mb-3">
                                 <h3 class="title-text ">Order List</h3>
                                 {{-- {{  sum($reward->product->reward_point) }} --}}
                                 <?php $sum_tot_Price = 0 ?>
@@ -347,7 +347,7 @@
                                 @endforeach
                                 <div class="ms-auto">Total Reward Point {{ $sum_tot_Price / 100}}</div>
                             </div>
-                             
+
                                 <div class="container table-responsive">
                                     <table class="w-100 table table-bordered">
                                         <thead>

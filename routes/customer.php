@@ -21,21 +21,16 @@ Route::post('/chekcout-store',[CheckoutController::class,'checkoutStore'])->name
 Route::get('/delivery-charge-get',[CustomerController::class,'getCharge'])->name('get.charge');
 
 Route::group(['middleware'=> 'customerCheck'],function(){
+
     Route::get('/customer-logout',[CustomerController::class, 'logout'])->name('customer.logout');
     Route::get('/customer-dashboard',[DashboardController::class,'dashboard'])->name('customer.dashboard');
     Route::post('/customer-update',[DashboardController::class,'customerUpdate'])->name('auth.customer.update');
     Route::post('/customer-address',[DashboardController::class,'addressChange'])->name('auth.customer.address');
     Route::get('/customer-invoice/{id}',[DashboardController::class,'customerInvoice'])->name('customer-indivisual.invoice');
     Route::post('/password-update-customer',[CustomerController::class,'customerPasswordUpdate'])->name('password.update.customer');
-   
-      // wishlist
-  
 
+    // wishlist
     Route::get('/cupon-Check', [CheckoutController::class, 'cuponCheck'])->name('cupon.check');
-  
     Route::get('/wishlist-delete/{delete}',[WishlistController::class,'deleteWishlist'])->name('wishlist.delete');
-   
+
 });
-
-
-

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Customer\WishlistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,27 +63,31 @@ Route::get('/product-details/{id}', [ApiController::class, 'productDetails']);
 Route::post('/cartAdd/{id}',[ApiController::class,'cartAdd']);
 Route::get('/get-cart',[ApiController::class,'getCart']);
 
+// Add to Wish List
+
+
+
 Route::post('/customer-store', [ApiController::class, 'CustomerStore']);
 Route::get('/checkout',[ApiController::class,'checkout']);
 
 Route::post('/register', [AuthController::class, 'register']);
 // Route::get('/get-data', [AuthController::class, 'GetData']);
 Route::post('login', [AuthController::class, 'login']);
-Route::group(['middleware' => ['jwt.verify']], 
+Route::group(['middleware' => ['jwt.verify']],
 function ($router) {
     // Route::post('refresh', [AuthController::class, 'refresh']);
     // Route::get('token', [AuthController::class, 'Token']);
+    Route::post('/wishlist',[ApiController::class,'wishtlistStore']);
+    Route::get('/wishlist-show',[ApiController::class,'wishtlistShow']);
+    Route::get('/wishlist-delete/{delete}',[ApiController::class,'deleteWishlist']);
     Route::get('/customer-logout',[AuthController::class, 'logout']);
     Route::get('/customer-dashboard',[ApiController::class,'dashboard']);
     Route::post('/just-order', [ApiController::class, 'justOrderStore']);
     Route::get('/get_user', [ApiController::class, 'get_user']);
     Route::post('/order-store', [ApiController::class, 'orderStore']);
+    Route::post('/password-update-customer',[ApiController::class,'customerPasswordUpdate']);
+    Route::post('/customer-update',[ApiController::class,'customerUpdate']);
+    Route::post('/chekcout-store',[ApiController::class,'checkoutStore']);
+    Route::post('review-product', [ApiController::class, 'reviewStore']);
+    Route::get('rewiew-list/{id}', [ApiController::class, 'showReview']);
 });
-
-
-
-
-
-
-
-

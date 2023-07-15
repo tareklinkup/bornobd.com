@@ -66,10 +66,10 @@ $currentUrl = url()->current();
 
                                                 <a class="" href="{{ url('customer-dashboard') }}">
                                                     <i class="fa-regular fa-heart"></i>
-                                                    <span
+                                                    {{-- <span
                                                         class="position-absolute top-25 start-75 translate-middle badge rounded-pill bg-info nav-pill-font"
                                                         id="wishlist">
-                                                    </span>
+                                                    </span> --}}
                                                 </a>
                                                 <a href="{{ route('customer.login') }}"> <i
                                                         class="fa-regular fa-user"></i></a>

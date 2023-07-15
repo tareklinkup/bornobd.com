@@ -32,21 +32,21 @@ class WishlistController extends Controller
 
     public function wishtlistShow()
     {
-        if (Auth::guard('customer')->check()) {
-            $wishlist = wishList::where('customer_id', Auth::guard('customer')->user()->id)->count();
+        if (Auth::guard('api')->check()) {
+            $wishlist = wishList::where('customer_id', Auth::guard('api')->user()->id)->count();
             if ($wishlist) {
                 return response()->json($wishlist);
             }
         } else {
-            return redirect()->route('customer.login');
+            return response()->json(['title' => 'Wishlist Not Found!']);
         }
     }
 
 
     public function deleteWishlist($id)
     {
-        if (Auth::guard('customer')->check()) {
-            $delete = wishList::where('id', $id)->where('customer_id', Auth::guard('customer')->user()->id)->delete();
+        if (Auth::guard('api')->check()) {
+            $delete = wishList::where('product_id', $id)->where('customer_id', Auth::guard('api')->user()->id)->delete();
             if ($delete) {
                 return back()->with('success', 'Wishlist remove successfully');
             }
@@ -54,4 +54,5 @@ class WishlistController extends Controller
             return redirect()->route('customer.login');
         }
     }
+
 }
