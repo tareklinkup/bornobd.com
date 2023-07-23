@@ -70,6 +70,9 @@ Route::get('/get-cart',[ApiController::class,'getCart']);
 Route::post('/customer-store', [ApiController::class, 'CustomerStore']);
 Route::get('/checkout',[ApiController::class,'checkout']);
 
+Route::post('/execute-payment',[ApiController::class,'executePayment']);
+
+
 Route::post('/register', [AuthController::class, 'register']);
 // Route::get('/get-data', [AuthController::class, 'GetData']);
 Route::post('login', [AuthController::class, 'login']);
@@ -90,4 +93,7 @@ function ($router) {
     Route::post('/chekcout-store',[ApiController::class,'checkoutStore']);
     Route::post('review-product', [ApiController::class, 'reviewStore']);
     Route::get('rewiew-list/{id}', [ApiController::class, 'showReview']);
+    Route::get('order-list', [ApiController::class, 'orderList']);
+
+
 });

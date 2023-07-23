@@ -63,7 +63,7 @@ class CheckoutURLController extends Controller
 
         $response = $this->curlWithBody('/tokenized/checkout/token/grant',$header,'POST',$body_data_json);
 
-       // dd($response);
+        // dd($response);
 
         $token = json_decode($response)->id_token;
 
@@ -121,6 +121,7 @@ class CheckoutURLController extends Controller
             $payment->order_id = $res_array['payerReference'];
             $payment->invoice = $res_array['merchantInvoiceNumber'];
             $payment->trx_id = $res_array['trxID'];
+              $payment->payment_id = $paymentID;
             $payment->phone = $res_array['customerMsisdn'];
             $payment->amount = $res_array['amount'];
             $payment->status = 'a';
@@ -160,17 +161,12 @@ class CheckoutURLController extends Controller
     public function callback(Request $request)
     {
         $allRequest = $request->all();
-        if(isset($allRequest['status']) && $allRequest['status'] == 'failure'){
-            return view('website.payment.fail')->with([
-                'response' => 'Payment Failed'
-            ]);
-
-        }else if(isset($allRequest['status']) && $allRequest['status'] == 'cancel'){
-            return view('website.payment.fail')->with([
-                'response' => 'Payment Cancelled'
-            ]);
-
-        }else{
+    //   $paymentIdCheck =  $this->db->query("select payment_id from payments where payment_id = $allRequest['paymentID']");
+    
+        $paymentIdCheck = Payment::where('payment_id', $allRequest['paymentID'])->first();
+        
+       
+        if((isset($allRequest['status']) && $allRequest['status'] == 'success') && !$paymentIdCheck){
 
             $response = $this->executePayment($allRequest['paymentID']);
 
@@ -194,9 +190,16 @@ class CheckoutURLController extends Controller
                 'response' => $arr['trxID']
             ]);
 
+        } else{
+           
+            return view('website.payment.fail')->with([
+                'response' => 'Payment Failed'
+            ]);
+
+        }
+        
         }
 
-    }
 
     public function getRefund(Request $request)
     {

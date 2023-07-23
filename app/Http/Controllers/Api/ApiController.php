@@ -25,6 +25,7 @@ use App\Models\OrderDetails;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use App\Models\StoreLocation;
+use App\Models\Payment;
 use App\Models\CompanyProfile;
 use App\Models\DeliveryCharge;
 use App\Mail\OrderConfirmation;
@@ -39,6 +40,7 @@ use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Intervention\Image\Facades\Image;
 
 
 class ApiController extends Controller
@@ -75,9 +77,79 @@ class ApiController extends Controller
         return response()->json(['data' =>  $products], 200);
     }
 
-    public function productDetails($id)
+    // public function productDetails($id)
+    // {
+    //     $data['product'] = Product::with('productImage')->find($id);
+    //     if($data['product']->sub_category_id != null){
+    //         $data['similerProduct'] = Product::where('category_id',  $data['product']->category_id)->where('id','!=' , $data['product']->id)->get();
+    //     }else{
+    //         $data['similerProduct'] = Product::where('sub_category_id',  $data['product']->sub_category_id)->where('id','!=' , $data['product']->id)->get();
+    //     }
+    //     return response()->json(['data' =>$data ], 200);
+    // }
+
+    // public function productDetails($id)
+    // {
+    //     $data['product'] = Product::with(['productImage', 'category'])->find($id);
+
+    //       return response()->json(['data' => $data]);
+
+    //     $size = explode(',', $data['product']->size_id);
+    //     $sizes = Size::all();
+    //     $data['size'] = [];
+    //     foreach($sizes as $item){
+    //         foreach ($size as $key => $s) {
+    //             if ($s == $item->id){
+    //                 $dataValue= $item;
+    //                 array_push($data['size'], $dataValue);
+    //             }
+    //         }
+    //     }
+
+    //     $color = explode(',', $data['product']->color_id);
+    //     $colors = Color::all();
+    //     $data['color'] = [];
+    //     foreach($colors as $item){
+    //         foreach ($color as $key => $c) {
+    //             if ($c == $item->id){
+    //                 $dataValue = $item;
+    //                 array_push($data['color'], $dataValue);
+    //             }
+    //         }
+    //     }
+
+    //     return response()->json(['data' => $data]);
+
+    // }
+
+       public function productDetails($id)
     {
-        $data['product'] = Product::with('productImage')->find($id);
+        $data['product'] = Product::with(['productImage', 'category'])->find($id);
+
+        $size = explode(',', $data['product']->size_id);
+        $sizes = Size::all();
+        $data['size'] = [];
+        foreach($sizes as $item){
+            foreach ($size as $key => $s) {
+                if ($s == $item->id){
+                    $dataValue= $item;
+                    array_push($data['size'], $dataValue);
+                }
+            }
+        }
+
+        $color = explode(',', $data['product']->color_id);
+        $colors = Color::all();
+        $data['color'] = [];
+        foreach($colors as $item){
+            foreach ($color as $key => $c) {
+                if ($c == $item->id){
+                    $dataValue = $item;
+                    array_push($data['color'], $dataValue);
+                }
+            }
+        }
+
         if($data['product']->sub_category_id != null){
             $data['similerProduct'] = Product::where('category_id',  $data['product']->category_id)->where('id','!=' , $data['product']->id)->get();
         }else{
@@ -240,7 +312,7 @@ class ApiController extends Controller
         $data['delivery_charge'] = DeliveryCharge::all();
         $data['upazilas'] = Upazila::all();
         $data['courier'] = Tracking::all();
-        // $data['store'] = StoreLocation::all();
+        $data['store'] = StoreLocation::all();
 
         $data['carts'] = \Cart::getContent();
         $data['product'] = Product::with('category')->get();
@@ -552,12 +624,43 @@ class ApiController extends Controller
         if (Auth::guard('api')->check()) {
             // $wishlist = wishList::where('customer_id', Auth::guard('api')->user()->id)->count();
 
-        $wishlist = wishList::with('product')->where('customer_id', Auth::guard('api')->user()->id)->get();
-            if ($wishlist) {
-                return response()->json(['data' => $wishlist]);
+        $data['wishlist'] = wishList::with('product')->where('customer_id', Auth::guard('api')->user()->id)->get();
+        // return  $data['wishlist'];
+            if ($data['wishlist']) {
+
+                $sizes = [];
+                $colors = [];
+
+               foreach( $data['wishlist'] as $item)
+               {
+
+                    $size = explode(',', $item->product->size_id);
+                    $color = explode(',', $item->product->color_id);
+
+                    //size
+                    foreach ($size as $key => $s) {
+                        $dataValue= Size::where("id", $s)->first();
+                        array_push($sizes, $dataValue);
+                    }
+
+                    //Color
+                    foreach ($color as $key => $c)
+                     {
+                        $dataValue= Color::where("id", $c)->first();
+                        array_push($colors, $dataValue);
+                    }
+
+                    $item->product->size = $sizes;
+                    $item->product->color = $colors;
+
+                    $sizes = [];
+                    $colors = [];
+                }
+
+                 return response()->json(['data' => $data], 200);
             }
         } else {
-            return response()->json(['error' => 'Wishlist not found'], 404);
+            return response()->json(['title' => 'Wishlist not found'], 404);
         }
     }
 
@@ -581,27 +684,27 @@ class ApiController extends Controller
                     if ($customer) {
                         // Auth::guard('customer')->logout();
                         // Session::flash('success', 'Password Update Successfully');
-                        return response()->json(['success' => 'Password Update Successfully'], 200);
+                        return response()->json(['title' => 'Password Update Successfully'], 200);
                         // return back();
                     } else {
                         // Session::flash('error', 'Current password not match');
-                        return response()->json(['error' => 'Current password not match'], 404);
+                        return response()->json(['title' => 'Current password not match'], 404);
                         // return back();
                     }
 
                 } else {
                     // Session::flash('error', 'Same as Current password');
-                    return response()->json(['error' => 'Same as Current password'], 404);
+                    return response()->json(['title' => 'Same as Current password'], 404);
                     // return back();
                 }
             } else {
                 // Session::flash('error', '!Current password not match');
-                return response()->json(['error' => '!Current password not match'], 404);
+                return response()->json(['title' => '!Current password not match'], 404);
                 // return back();
             }
         }
         else {
-             return response()->json(['data' => 'success'], 200);
+             return response()->json(['title' => 'success'], 200);
         }
 
     }
@@ -655,7 +758,7 @@ class ApiController extends Controller
             return response()->json(['title' => 'Profile update Successfully']);
         } else {
             // Session::flash('error', 'Profile Update fail');
-            return response()->json(['error' => 'Profile update Failed']);
+            return response()->json(['title' => 'Profile update Failed']);
         }
 
 
@@ -664,18 +767,14 @@ class ApiController extends Controller
     public function checkoutStore(Request $request)
     {
 
-        $request->validate(
-            [
-                'customer_name'     => 'required|max:150',
-                'customer_mobile'   => 'required|regex:/^01[3-9][\d]{8}$/|max:14',
-                'customer_email'    => 'required|email|max:50',
-                'billing_address'   => 'required',
-                'delivery_type'           => 'required',
-                // 'charge'            => 'required'
-            ],
 
-        );
+        $cart = json_encode($request->cart, true);
 
+
+        $jsonDecode = json_decode($cart);
+
+        // return response()->json(['cart' => $jsonDecode]);
+        // dd();
 
         if (Auth::guard('api')->check()) {
 
@@ -722,71 +821,63 @@ class ApiController extends Controller
                 DB::beginTransaction();
                 $order = new Order();
                 $order->invoice_no              = $invoice_no;
-                $order->customer_name           = $request->customer_name;
-                $order->shipping_name           = $request->shipping_name ?? $request->customer_name;
-                $order->customer_mobile         = $request->customer_mobile;
-                $order->shipping_phone          = $request->shipping_phone ?? $request->customer_mobile;
-                $order->customer_email          = $request->customer_email;
-                $order->shipping_email          = $request->shipping_email ?? $request->customer_email;
-                $order->billing_address         = $request->billing_address;
-                $order->shipping_address        = $request->shipping_address ?? $request->billing_address;
-                $order->note                    = $request->note ?? '';
+                $order->customer_name           = $request->order['customer_name'];
+                $order->shipping_name           = $request->order['shipping_name'] ?? $request->order['customer_name'];
+                $order->customer_mobile         = $request->order['customer_mobile'];
+                $order->shipping_phone          = $request->order['shipping_phone'] ?? $request->order['customer_mobile'];
+                $order->customer_email          = $request->order['customer_email'];
+                $order->shipping_email          = $request->order['shipping_email'] ?? $request->order['customer_mobile'];
+                $order->billing_address         = $request->order['billing_address'];
+                $order->shipping_address        = $request->order['shipping_address'] ?? $request->order['billing_address'];
+                $order->note                    = $request->order['note'] ?? '';
                 $order->updated_by              = Auth::guard('api')->user()->id;
                 $order->customer_id             = Auth::guard('api')->user()->id;
-                $order->shipping_cost           = $charge;
+                $order->shipping_cost           = $request->order['shipping_cost'];
                 $order->ip_address              = $request->ip();
                 $order->membership_discount     = $member_ship_discount;
                 // $order->total_trailoring_charge = $trailoring_sum;
                 // $order->total_wrapping_charge   = $sum;
-                $order->total_amount            = $total_amount;
+                $order->total_amount            = $request->order['total_amount'];
                 // $order->shop_id                 = $request->shop_id ?? NULL;
                 // $order->area_id                 = $request->area_id ?? NULL;
                 // $order->courier_id              = $request->courier_id ?? NULL;
                 $order->save();
 
 
-
                 // dd(\Cart::getContent());
+                // return response()->json(['data' => $jsonDecode]);
 
-                foreach (\Cart::getContent() as $value) {
-                    // $price = $value->price * $value->quantity + $value->tailoring_charge + $value->wp_price;
+                $orderDetails = array_map(function($product) {
+                    return [
+                        'product_id'     => $product['product_id'],
+                        'product_name'  => $product['product_name'],
+                        'customer_id'   => Auth::guard('api')->user()->id,
+                        'price'        => $product['price'],
+                        'color_id'      => $product['color_id'],
+                        'size_id'      => $product['size_id'],
+                        'quantity'     => $product['quantity'],
+                        'message'     => $product['message'],
+                        'total_price' => ($product['price'] *  $product['quantity'])
+                    ];
+                }, $request->cart);
 
-                    $price = $value->price * $value->quantity;
+                //  return $request->cart;
 
-                    $orderDetails = new OrderDetails();
-                    $orderDetails->order_id = $order->id;
-                    $orderDetails->product_id = $value->id;
-                    $orderDetails->product_name = $value->name;
-                    $orderDetails->customer_id = Auth::guard('api')->user()->id;
-                    $orderDetails->price = $value->price;
-                    $orderDetails->quantity = $value->quantity;
-                    $orderDetails->color_id = $value->attributes->color_id;
-                    $orderDetails->size_id = $value->attributes->size_id;
-                    $orderDetails->total_price = $price;
-                    $orderDetails->from_name = $value->from_name;
-                    $orderDetails->to_name = $value->to_name;
-                    $orderDetails->wp_price = $value->wp_price ?? NULL;
-                    $orderDetails->message = $value->message;
-                    // $orderDetails->trailoring_charge = $value->tailoring_charge ?? '0';
-                    // $orderDetails->trailoring_charge = 0;
-                    $orderDetails->save();
-                    if ($orderDetails) {
-                        $product_id = $orderDetails->product_id;
-                        $wishlist = wishList::where('product_id', $product_id)->where('customer_id', Auth::guard('customer')->user()->id)->delete();
-                        if ($wishlist) {
-                            // Session::flash('success', 'Your Wishlist Is clear');
-                            return response()->json(['title' => 'Your Wishlist is Clear']);
-                        }
+                $order->orderDetails()->createMany($orderDetails);
+
+                foreach($jsonDecode as $value) {
+
+                        $product_id = $value->product_id;
+
+                        $wishlist = wishList::where('product_id', $product_id)->where('customer_id', Auth::guard('api')->user()->id)->delete();
                     }
-                }
-
 
 
                 DB::commit();
                 // $message = "সফল ভাবে আপনার অর্ডারটি সম্পন্ন হয়েছে, আপনি {$order->total_amount} টাকার অর্ডার করেছেন।";
 
                 // Session::flash('message', 'Order Submit successfully');
-                return response()->json(['message' => 'Order Submit Successfully']);
+                return response()->json(['title' => 'Order Submit Successfully', 'id' =>  $order->id, 'total_amount' => $order->total_amount]);
 
                 // $this->send_sms($order->customer_mobile, $message);
 
@@ -812,14 +903,14 @@ class ApiController extends Controller
                 return $e->getMessage();
                 DB::rollBack();
                 // Session::flash('error', 'order submitted fail!');
-                return response()->json(['error' => 'Order Submitted Fail']);
+                return response()->json(['title' => 'Order Submitted Fail']);
             }
         } else {
             if ($request->customer_mobile) {
                 $customer_check = Customer::where('phone', '=', $request->customer_mobile)->first();
                 if ($customer_check) {
                     // Session::flash('success', 'You Have Already an Account Please login first to checkout');
-                    return response()->json(['sucess' => 'You Have Already an Account Please login first to checkout']);
+                    return response()->json(['title' => 'You Have Already an Account Please login first to checkout']);
 
                     // return redirect()->route('customer.login');
                 } else {
@@ -918,7 +1009,7 @@ class ApiController extends Controller
                             // $message = "সফল ভাবে আপনার অর্ডারটি সম্পন্ন হয়েছে, আপনি {$order->total_amount} টাকার অর্ডার করেছেন।";
 
                             // Session::flash('message', 'Order Submit successfully');
-                            return response()->json(['message' => 'Order Submit successfully']);
+                            return response()->json(['title' => 'Order Submit successfully']);
 
                             // $this->send_sms($order->customer_mobile, $message);
 
@@ -933,14 +1024,14 @@ class ApiController extends Controller
                         } else {
                             DB::rollBack();
                             // Session::flash('error', 'order submitted fail!');
-                            return response()->json(['error' => 'Order Submitted Fail!']);
+                            return response()->json(['title' => 'Order Submitted Fail!']);
                         }
 
                         } catch (\Exception $e) {
                             return $e->getMessage();
                             DB::rollBack();
                             // Session::flash('error', 'order submitted fail!');
-                            return response()->json(['error' => 'Order Submitted Fail!']);
+                            return response()->json(['title' => 'Order Submitted Fail!']);
                         }
                     }
                 }
@@ -970,10 +1061,35 @@ class ApiController extends Controller
             if($review){
                 $success = 'successfully review waiting for approve admin';
             }
-           return response()->json(['Success' => $success], 200);
+           return response()->json(['title' => $success], 200);
         } else {
-            return response()->json(['error' => 'Opps Something Wrong!'], 404);
+            return response()->json(['title' => 'Opps Something Wrong!'], 404);
         }
+    }
+
+        public function executePayment(Request $request)
+    {
+
+            $payment = new Payment();
+            $payment->order_id = $request->payerReference;
+            $payment->invoice = $request->merchantInvoiceNumber;
+            $payment->payment_id = $request->paymentID;
+            $payment->trx_id = $request->trxID;
+            $payment->phone = $request->customerMsisdn;
+            $payment->amount = $request->amount;
+            $payment->status = 'a';
+            $payment->save();
+
+            $order = Order::where('id', $payment->order_id)->first();
+            $order->payment_status = 'a';
+            $order->save();
+
+            if($payment){
+                return response()->json(['title' => 'Payment Success'], 200);
+            } else {
+            return response()->json(['title' => 'Opps Something Wrong!'], 404);
+           }
+
     }
 
 
@@ -981,12 +1097,26 @@ class ApiController extends Controller
     {
 
         if(Auth::guard('api')->check()){
-            $reviewList = Review::where('product_id', $id)->where('customer_id', Auth::guard('api')->user()->id)->orWhere('status', 'a')->latest()->get();
+            $reviewList = Review::with('customer')->where('product_id', $id)->where('customer_id', Auth::guard('api')->user()->id)->orWhere('status', 'a')->latest()->get();
 
         }else{
             $reviewList = Review::where('product_id', $id)->where('status', 'a')->latest()->get();
         }
         return response()->json($reviewList);
+    }
+
+    public function orderList()
+    {
+        if(Auth::guard('api')->check())
+        {
+            $data['order'] = Order::with('orderDetails')->where('customer_id',Auth::guard('api')->user()->id)->get();
+
+            // $data['size'] = Size::where('id', )
+            return $data['order'];
+
+            //return response()->json(['data' => $data['order'] ]);
+        }
+
     }
 
  }

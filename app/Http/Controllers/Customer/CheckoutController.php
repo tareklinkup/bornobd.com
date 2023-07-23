@@ -151,9 +151,9 @@ class CheckoutController extends Controller
                 // $order->total_trailoring_charge = $trailoring_sum;
                 // $order->total_wrapping_charge   = $sum;
                 $order->total_amount            = $total_amount;
-                // $order->shop_id                 = $request->shop_id ?? NULL;
-                // $order->area_id                 = $request->area_id ?? NULL;
-                // $order->courier_id              = $request->courier_id ?? NULL;
+                $order->shop_id                 = $request->shop_id ?? NULL;
+                $order->area_id                 = $request->area_id ?? NULL;
+                $order->courier_id              = $request->courier_id ?? NULL;
                 $order->save();
 
 

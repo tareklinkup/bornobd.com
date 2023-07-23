@@ -6,7 +6,6 @@
             .select2 {
                 width: 100%
             }
-
         </style>
     @endpush
     <div class="container">
@@ -122,14 +121,14 @@
                                                 @if ($item->product->discount != '')
                                                     <p class="mb-1"> <span class="fw-bolder">Price:</span>
                                                         <span class="fw-bolder pe-3 text-danger">
-                                                            {{currency_sign()}}{{currency_amount(calculateDiscount($item->product->price, $item->product->discount))}}</span>
+                                                            {{ currency_sign() }}{{ currency_amount(calculateDiscount($item->product->price, $item->product->discount)) }}</span>
                                                         <span><del
                                                                 class="text-danger">{{ $item->product->price }}Tk</del></span>
                                                     </p>
                                                 @else
                                                     <p class="mb-1"><span class="fw-bolder">Price:</span>
-                                                        {{currency_sign()}}{{currency_amount($item->product->price)}}
-                                                        </p>
+                                                        {{ currency_sign() }}{{ currency_amount($item->product->price) }}
+                                                    </p>
                                                 @endif
                                             </span>
                                             <div class="color-size">
@@ -181,13 +180,12 @@
                                                     <button type="submit" class="btn checkout-btn">Checkout</button>
 
                                                 </form>
-                                                <a type="submit" href="{{ route('wishlist.delete', $item->id) }}"  class="ms-2 btn btn-outline-danger mt-2"><i class="fas fa-trash-alt"></i></a>
+                                                <a type="submit" href="{{ route('wishlist.delete', $item->id) }}"
+                                                    class="ms-2 btn btn-outline-danger mt-2"><i
+                                                        class="fas fa-trash-alt"></i></a>
                                             </span>
 
                                         </div>
-
-
-
                                     @endforeach
                                 </table>
                             </div>
@@ -204,8 +202,7 @@
                                         <div class="form-group col-lg-6 col-md-6 col-12  py-1">
                                             <label for="">Name:</label>
                                             <input type="text" name="name"
-                                                value="{{ Auth::guard('customer')->user()->name }}"
-                                                class="form-control">
+                                                value="{{ Auth::guard('customer')->user()->name }}" class="form-control">
                                         </div>
                                         <div class="form-group col-lg-6 col-md-6 col-12  py-1">
                                             <label for="">Username:</label>
@@ -227,13 +224,14 @@
                                         </div>
                                         <div class="form-group col-lg-6 col-md-6 col-12  py-1">
                                             <label for="">Photo:</label>
-                                            <input type="file" name="profile_picture" id="image" class="form-control"
-                                                onchange="readURL(this);">
+                                            <input type="file" name="profile_picture" id="image"
+                                                class="form-control" onchange="readURL(this);">
                                             <span><button type="submt" class="btn update-btn mt-3"
                                                     value="Update">Update</button></span>
                                         </div>
                                         <div class="form-group col-lg-6 col-md-6 col-12">
-                                            <span class="ms-auto"> <img src="" alt="" id="previewImage"></span>
+                                            <span class="ms-auto"> <img src="" alt=""
+                                                    id="previewImage"></span>
                                         </div>
 
                                     </div>
@@ -298,8 +296,7 @@
                                             </div> --}}
                                             <div class="form-group my-1">
                                                 <label for="">Address:</label>
-                                                <textarea name="address" id="" class="form-control @error('name') is-invalid @enderror"
-                                                    rows="2">{{ Auth::guard('customer')->user()->address }}</textarea>
+                                                <textarea name="address" id="" class="form-control @error('name') is-invalid @enderror" rows="2">{{ Auth::guard('customer')->user()->address }}</textarea>
                                             </div>
                                             <input type="submit" class="btn update-btn" value="Update">
                                         </div>
@@ -317,7 +314,8 @@
                                         @csrf
                                         <div class="form-group col-lg-12 col-md-6 col-12  py-1">
                                             <label for="">Current passowrd:</label>
-                                            <input type="passowrd" name="currentPass" value="" class="form-control">
+                                            <input type="passowrd" name="currentPass" value=""
+                                                class="form-control">
                                         </div>
                                         <div class="form-group col-lg-12 col-md-6 col-12  py-1">
                                             <label for="">New Password:</label>
@@ -337,16 +335,16 @@
                         <div class="tab-pane  fade" id="order">
                             <div class="card p-4">
                                 <div class="vertical-align dasboard-dotted-border mb-3">
-                                <h3 class="title-text ">Order List</h3>
-                                {{-- {{  sum($reward->product->reward_point) }} --}}
-                                <?php $sum_tot_Price = 0 ?>
-                                @foreach ($order as $item)
-                                      @if(isset($item->total_amount))
-                                         <?php $sum_tot_Price += $item->total_amount ?>
-                                     @endif
-                                @endforeach
-                                <div class="ms-auto">Total Reward Point {{ $sum_tot_Price / 100}}</div>
-                            </div>
+                                    <h3 class="title-text ">Order List</h3>
+                                    {{-- {{  sum($reward->product->reward_point) }} --}}
+                                    <?php $sum_tot_Price = 0; ?>
+                                    @foreach ($order as $item)
+                                        @if (isset($item->total_amount))
+                                            <?php $sum_tot_Price += $item->total_amount; ?>
+                                        @endif
+                                    @endforeach
+                                    <div class="ms-auto">Total Reward Point {{ $sum_tot_Price / 100 }}</div>
+                                </div>
 
                                 <div class="container table-responsive">
                                     <table class="w-100 table table-bordered">
@@ -379,9 +377,11 @@
                                                         @endif
                                                     </td>
                                                     {{-- <td>Pending</td> --}}
-                                                    <td>{{currency_sign()}}{{currency_amount($item->total_amount)}}</td>
+                                                    <td>{{ currency_sign() }}{{ currency_amount($item->total_amount) }}
+                                                    </td>
                                                     <td>
-                                                        <a href="{{ route('customer-indivisual.invoice', $item->id) }}" class="btn btn-dagner"> <i
+                                                        <a href="{{ route('customer-indivisual.invoice', $item->id) }}"
+                                                            class="btn btn-dagner"> <i
                                                                 class="fas fa-file-invoice"></i></a>
                                                     </td>
                                                 </tr>
@@ -420,7 +420,7 @@
                 }
             }
             document.getElementById("previewImage").src =
-                "{{ Auth::guard('customer')->user()->profile_picture? Auth::guard('customer')->user()->profile_picture: '/noimage.png' }} ";
+                "{{ Auth::guard('customer')->user()->profile_picture ? Auth::guard('customer')->user()->profile_picture : '/noimage.png' }} ";
         </script>
 
         <script>

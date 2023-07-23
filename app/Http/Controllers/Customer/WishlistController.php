@@ -45,10 +45,12 @@ class WishlistController extends Controller
 
     public function deleteWishlist($id)
     {
-        if (Auth::guard('api')->check()) {
-            $delete = wishList::where('product_id', $id)->where('customer_id', Auth::guard('api')->user()->id)->delete();
+        if (Auth::guard('customer')->check()) {
+            $delete = wishList::where('id', $id)->where('customer_id', Auth::guard('customer')->user()->id)->delete();
             if ($delete) {
                 return back()->with('success', 'Wishlist remove successfully');
+            }else{
+                return 'not deleted';
             }
         } else {
             return redirect()->route('customer.login');

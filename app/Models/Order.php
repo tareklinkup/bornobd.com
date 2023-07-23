@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Order extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $fillable  = ['customer_id','invoice_no','customer_name','customer_mobile','customer_email','shipping_address','billing_address','vat_amount','shipping_cost','total_amount','updated_by','status'];
+
+    protected $guarded = [];
+    // protected $fillable  = ['customer_id','invoice_no','customer_name','customer_mobile','customer_email','shipping_address','billing_address','vat_amount','shipping_cost','total_amount','updated_by','status'];
 
     // customer relationship
     public function customer(){
@@ -18,10 +20,13 @@ class Order extends Model
     }
     // customer relationship
     public function orderDetails(){
-    	return $this->hasMany(OrderDetails::class, 'order_id', 'id');
+    	return $this->hasMany(OrderDetails::class, 'order_id', 'id')->with('size', 'color');
     }
+
+    // payment relationship
 
     public function deliveryTime(){
         return $this->belongsTo(DeliveryTime::class,'time_id','id');
     }
+
 }

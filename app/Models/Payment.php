@@ -12,4 +12,8 @@ class Payment extends Model
 
     protected $guarded = [];
 
+    public function Order(){
+        return $this->hasMany(Order::class, 'order_id', 'id');
+    }
+
 }

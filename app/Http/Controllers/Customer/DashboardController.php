@@ -35,7 +35,6 @@ class DashboardController extends Controller
     //         return (int)$reward->product;
     //     });
 
-
         $reward  =  $reward->whereHas('product', function ($products) use ($customer_id) {
             $products->where('customer_id', $customer_id);
         })->get();

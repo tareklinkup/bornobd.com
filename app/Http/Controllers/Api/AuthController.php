@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    
+
     // public function __construct()
     // {
     //     $this->middleware('auth:api', ['except' => ['login']]);
@@ -70,7 +70,7 @@ class AuthController extends Controller
     //   return $credentials->phone;
         if ($token = $this->guard('api')->attempt($credentials)) {
             // return "success";
-            
+
            $customer = Customer::where('phone', $request->phone)->first();
             return response()->json([
                 'token' => $this->respondWithToken($token),
@@ -89,7 +89,7 @@ class AuthController extends Controller
             'success' => "success"
         ], 200);
     }
-   
+
     public function me()
     {
         return response()->json($this->guard('api')->user());
@@ -116,7 +116,7 @@ class AuthController extends Controller
         ]);
     }
 
-    
+
     public function guard()
     {
         return Auth::guard('api');

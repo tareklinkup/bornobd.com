@@ -10,6 +10,7 @@
                 <li class="breadcrumb-item active fw-bolder" aria-current="page">{{ $product->name }} details</li>
             </ol>
         </nav>
+
     </div>
     <section class="product-details mt-3">
         <div class="container">
@@ -18,7 +19,7 @@
                     <div class="owl-carousel modal-carousel">
                         <div class="zoom-img-outer parent_of_img text-center">
                             <img src="{{ asset('/uploads/products/original/' . $product->main_image) }}"
-                                class="w-100 zoomImg product_img"  >
+                                class="w-100 zoomImg product_img">
                         </div>
                         @foreach ($product->productImage as $item)
                             <div class="zoom-img-outer parent_of_img text-center">
@@ -29,11 +30,11 @@
                     </div>
                     <div class="owl-carousel product-details-slider">
                         <img src="{{ asset('/uploads/products/original/' . $product->main_image) }}" alt=""
-                            onclick="imageChange({{ $product->id }})" >
+                            onclick="imageChange({{ $product->id }})">
 
                         @foreach ($product->productImage as $item)
-                            <img src="{{ asset('/uploads/products/others/small/' . $item->other_small_image) }}" alt=""
-                                onclick="imageChange({{ $item->id }})">
+                            <img src="{{ asset('/uploads/products/others/small/' . $item->other_small_image) }}"
+                                alt="" onclick="imageChange({{ $item->id }})">
                         @endforeach
                     </div>
                 </div>
@@ -45,13 +46,15 @@
                         <div class="d-flex">
                             <p class="mb-1 detail-text"> <span class="">Price:</span>
                                 <span class=" pe-3 text-danger">
-                                    {{currency_sign()}}{{currency_amount(calculateDiscount($product->price, $product->discount)) }}
+                                    {{ currency_sign() }}{{ currency_amount(calculateDiscount($product->price, $product->discount)) }}
                                 </span>
-                                <span><del class="text-danger">{{currency_sign()}}{{ $product->currency_amount }}</del></span>
+                                <span><del
+                                        class="text-danger">{{ currency_sign() }}{{ $product->currency_amount }}</del></span>
                             </p>
                         </div>
                     @else
-                        <p class="mb-1 detail-text"><span class="">Price:</span> {{currency_sign()}}{{ $product->currency_amount }}</p>
+                        <p class="mb-1 detail-text"><span class="">Price:</span>
+                            {{ currency_sign() }}{{ $product->currency_amount }}</p>
                     @endif
                     <form action="" id="WishList">
                         @csrf
@@ -66,7 +69,7 @@
 
                         <div class="detail-text">
                             <span class="">Category:</span> <a
-                            href="{{ route('categroy.product', $product->category->slug) }}">{{ $product->category->name }}</a>
+                                href="{{ route('categroy.product', $product->category->slug) }}">{{ $product->category->name }}</a>
                         </div>
                         @php
                             $color = explode(',', $product->color_id);
@@ -122,7 +125,7 @@
                                 <div style="cursor: pointer" id="bulkQuntity" onclick="bluckQuntity({{ $product->id }})"
                                     class="wishlist-btn">For Bulk Quantity</div>
                             </div>
-                            <div style="cursor: pointer" id="bulkQuntity"   class=""></div>
+                            <div style="cursor: pointer" id="bulkQuntity" class=""></div>
                         </div>
 
                         <p class="mb-1 detail-text"><span class="">Stock:</span> <span
@@ -144,9 +147,13 @@
 
                 <div>
                     <ul class="mt-3 cart-content-list">
-                        <li>Free Delivary at {{currency_sign()}}{{ currency_amount($content->free_shipping) }} purchase</li>
+                        <li>Free Delivary at {{ currency_sign() }}{{ currency_amount($content->free_shipping) }} purchase
+                        </li>
                         <li>Product color may slghtly, depanding on light source or your device's screen resolution</li>
-                        <li><div style="color:rgb(7, 39, 184); cursor:pointer"  id="storeID">CHCEK IN-STORE AVAILABiLITY</div> </li>
+                        <li>
+                            <div style="color:rgb(7, 39, 184); cursor:pointer" id="storeID">CHCEK IN-STORE AVAILABiLITY
+                            </div>
+                        </li>
                     </ul>
                     {{-- size guide --}}
                 </div>
@@ -164,7 +171,8 @@
                         </div>
                     </div>
                 @endforeach
-               <div style="cursor: pointer" id="sizeGuides" onclick="sizeGuide({{ $product->id }})"><img class="w-100" src="{{ asset($product->sizeguide) }}" alt=""></div>
+                <div style="cursor: pointer" id="sizeGuides" onclick="sizeGuide({{ $product->id }})"><img
+                        class="w-100" src="{{ asset($product->sizeguide) }}" alt=""></div>
 
             </div>
         </div>
@@ -176,7 +184,8 @@
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="details" data-bs-toggle="tab" data-bs-target="#contact"
-                        type="button" role="tab" aria-controls="contact" aria-selected="false">Product Details</button>
+                        type="button" role="tab" aria-controls="contact" aria-selected="false">Product
+                        Details</button>
                 </li>
                 {{-- <li class="nav-item" role="presentation">
                     <button class="nav-link " id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
@@ -189,7 +198,8 @@
 
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#review"
-                        type="button" role="tab" aria-controls="contact" aria-selected="false">Product Review</button>
+                        type="button" role="tab" aria-controls="contact" aria-selected="false">Product
+                        Review</button>
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
@@ -228,7 +238,8 @@
                                 @csrf
                                 <h5 class="text-center login-title">Review Product</h5>
                                 <div class="form-group my-1">
-                                    <input type="hidden" id="product_id" name="product_id" value="{{ $product->id }}">
+                                    <input type="hidden" id="product_id" name="product_id"
+                                        value="{{ $product->id }}">
                                     @if (Auth::guard('customer')->check())
                                         <input type="text" id="customer_name" name="customer_name"
                                             value="{{ Auth::guard('customer')->user()->name }}" placeholder="Enter Name"
@@ -314,7 +325,7 @@
                                         <a href="{{ route('product.details', $item->slug) }}">
                                             <h5 class="m-0 product-name">{{ $item->name }}</h5>
                                         </a>
-                                        <p>{{currency_sign()}}{{ $item->currency_amount }}</p>
+                                        <p>{{ currency_sign() }}{{ $item->currency_amount }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -339,17 +350,20 @@
                         <div class=" p-4">
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Name</label>
-                                <input type="text" id="customerName" class="form-control" aria-describedby="emailHelp">
+                                <input type="text" id="customerName" class="form-control"
+                                    aria-describedby="emailHelp">
                                 <span id="customerNameError" class="text-danger text-italic"></span>
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Mobile</label>
-                                <input type="text" id="customerMobile" class="form-control" aria-describedby="emailHelp">
+                                <input type="text" id="customerMobile" class="form-control"
+                                    aria-describedby="emailHelp">
                                 <span id="customerMobileError" class="text-danger text-italic"></span>
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Email</label>
-                                <input type="text" id="customerEmail" class="form-control" aria-describedby="emailHelp">
+                                <input type="text" id="customerEmail" class="form-control"
+                                    aria-describedby="emailHelp">
                                 <span id="customerEmailError" class="text-danger text-italic"></span>
                             </div>
                             <div class="mb-3">
@@ -363,7 +377,7 @@
                 </div>
             </div>
         </div>
-{{-- size guide modal --}}
+        {{-- size guide modal --}}
         <div id="sizeGuide" class="modal">
             <div class="modal-dialog popUpModal">
                 <div class="modal-content">
@@ -381,7 +395,7 @@
                 </div>
             </div>
         </div>
-{{-- size availability modal --}}
+        {{-- size availability modal --}}
         <div id="sizeAvailability" class="modal">
             <div class="modal-dialog popUpModal">
                 <div class="modal-content">
@@ -395,20 +409,23 @@
                         {{-- <img src="{{ asset($product->name) }}" alt=""> --}}
                         <div class="col-6">
                             <p>Please Select Size</p>
-                        @foreach ($sizes as $item)
-                            @foreach ($size as $key => $s)
-                                @if ($s == $item->id)
-                                <div class="vertical-align">
-                                    <input style="height: 20px;width:20px; " type="radio" name="size_id" value="{{ $item->id }}"
-                                         onclick="size(this)" class=""
-                                        {{ $key == 1 ? 'checked' : '' }}> <span style="font-size:20px;padding-left:7px">{{ $item->name }}</span> <br></div>
-                                @endif
+                            @foreach ($sizes as $item)
+                                @foreach ($size as $key => $s)
+                                    @if ($s == $item->id)
+                                        <div class="vertical-align">
+                                            <input style="height: 20px;width:20px; " type="radio" name="size_id"
+                                                value="{{ $item->id }}" onclick="size(this)" class=""
+                                                {{ $key == 1 ? 'checked' : '' }}> <span
+                                                style="font-size:20px;padding-left:7px">{{ $item->name }}</span> <br>
+                                        </div>
+                                    @endif
+                                @endforeach
                             @endforeach
-                        @endforeach
 
                         </div>
                         <div class="col-6">
-                            <img class="w-100" src="{{ asset('/uploads/products/thumbnail/' . $product->thumb_image) }}" alt="">
+                            <img class="w-100" src="{{ asset('/uploads/products/thumbnail/' . $product->thumb_image) }}"
+                                alt="">
                         </div>
                         <button class="btn btn-secondary rounded-0 mt-2 bg-dark">Check</button>
                     </div>
@@ -427,8 +444,6 @@
         </script>
 
         <script>
-
-
             $(document).on('submit', '#reviewForm', function(e) {
                 e.preventDefault();
                 var product_id = $('#product_id').val();
@@ -654,7 +669,7 @@
                 $('#sizeAvailability').show();
                 $("#sizeAvailability").css("background-color", "rgb(0 0 0 / 42%)");
             });
-            $('.closeStore').on('click', function(){
+            $('.closeStore').on('click', function() {
                 $('#sizeAvailability').hide();
             });
         </script>
@@ -708,14 +723,14 @@
             }
         </script>
 
-    <script>
-        $(document).on('click', '#sizeGuides', function() {
-            $("#sizeGuide").show();
-            $("#sizeGuide").css("background-color", "rgb(0 0 0 / 42%)");
-        });
-        $('.closeGuide').on('click', function() {
-            $("#sizeGuide").hide();
-        });
-    </script>
+        <script>
+            $(document).on('click', '#sizeGuides', function() {
+                $("#sizeGuide").show();
+                $("#sizeGuide").css("background-color", "rgb(0 0 0 / 42%)");
+            });
+            $('.closeGuide').on('click', function() {
+                $("#sizeGuide").hide();
+            });
+        </script>
     @endpush
 @endsection

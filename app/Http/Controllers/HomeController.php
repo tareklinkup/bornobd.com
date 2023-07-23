@@ -104,17 +104,17 @@ class HomeController extends Controller
     public function productFileter(Request $request)
     {
         // dd($request->all());
-       
+
         $size_id = $request->size_id ? $request->size_id : '';
         $color_id = $request->color_id ? $request->color_id : '';
-     
+
         $p = Product::with(['productImage', 'category']);
 
         if(isset($request->input_value) && $request->input_value != '') {
             if($request->input_value == '2'){
                 $p = Product::with('productImage')->orderBy('price', 'asc');
             }elseif($request->input_value == '3'){
-                $p = Product::with('productImage')->orderBy('price', 'desc'); 
+                $p = Product::with('productImage')->orderBy('price', 'desc');
             }elseif($request->input_value == '1'){
                 $popular =  DB::table('order_details')->select('product_id', DB::raw('count(*) as total'))
                         ->groupBy('product_id')->get();
@@ -130,7 +130,7 @@ class HomeController extends Controller
              $p->where('price', '>=', $request->min_price )->where('price', '<=', $request->max_price)->orderBy('price', 'asc');
         }
         if (isset($size_id) && $size_id != '') {
-            $p->where('size_id', 'LIKE', "%{$size_id}%");  
+            $p->where('size_id', 'LIKE', "%{$size_id}%");
 
         }
         if(isset($color_id) && $color_id != ''){
@@ -138,7 +138,7 @@ class HomeController extends Controller
         }
 
         // if($request->input_value == '1') {
-      
+
         //     $popular =  DB::table('order_details')->select('product_id', DB::raw('count(*) as total'))
         //         ->groupBy('product_id')->get();
         //     if ($popular) {
@@ -147,7 +147,7 @@ class HomeController extends Controller
         //         }
         //     }
         // }
-       
+
         // if($request->input_value == '3') {
         //     $p = Product::with('productImage')->orderBy('price', 'desc');
         // }
@@ -170,12 +170,14 @@ class HomeController extends Controller
     {
         $service = Service::latest()->take(4)->get();
         $product = Product::where('slug', $slug)->first();
+
         if($product->sub_category_id != null){
             $similerProduct = Product::where('category_id',  $product->category_id)->where('id','!=' , $product->id)->paginate(4);
         }else{
             $similerProduct = Product::where('sub_category_id',  $product->sub_category_id)->where('id','!=' , $product->id)->paginate(4);
         }
         $reviewList = Review::where('product_id', $product->id)->get();
+
         return view('website.productDetails', compact('product', 'similerProduct','reviewList','service'));
     }
 
@@ -204,7 +206,7 @@ class HomeController extends Controller
         $product = $category_name->product()->paginate(8);
         return view('website.category', compact('product', 'category_name'));
     }
-    
+
     public function SubcateogryWiseProduct($slug)
     {
         $subcategory_name = SubCategory::where('slug', $slug)->first();
@@ -240,7 +242,7 @@ class HomeController extends Controller
         $partner = Partner::where('id', $id)->first();
         return response()->json($partner);
     }
-    
+
     public function cartList()
     {
         $wrapper = Wrapping::latest()->get();
@@ -325,7 +327,7 @@ class HomeController extends Controller
    public function storeList(){
        $store = StoreLocation::latest()->get();
        return view('website.storelist', compact('store'));
-   } 
+   }
 
    public function management()
    {
@@ -382,6 +384,6 @@ class HomeController extends Controller
        } catch (\Throwable $th) {
         return redirect()->back()->with('error',"Something went wrong");
        }
-       
+
     }
 }
